@@ -5,6 +5,9 @@
 # Home page
 GET     /                                       Application.index
 GET		/products								Products.index
+GET		/products/new							Products.newProduct
+GET		/products/renderPhoto					Products.renderPhoto
+POST		/products/newProduct						Products.addProduct
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

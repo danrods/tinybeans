@@ -1,0 +1,50 @@
+#{extends 'main.html' /}
+#{set title:'Products' /}
+
+<div class="container">
+  <div class="row">
+    <div class="col align-self-center">
+    		<div class="card">
+		  <div class="card-header">
+		  	<div class="row">
+			  	<div class="col-11">
+			  		Product Selection
+			  	</div>
+			    <div class="col-1">
+			    		<a role="button" class="btn btn-outline-primary" href="/products/new">+ add</a>
+			    </div>
+		    </div>
+		  </div>
+		  <div class="card-body">
+		  	<div class="row">
+		  		<h4>Select a Product: </h4>
+		  	</div>
+	    		<div class="row">
+		    		#{list items:products, as:'product' }
+			     <div class="col-4">
+			     	<div class="card" >
+					  <img class="card-img-top" src="@{Products.renderPhoto(product.id)}" alt="Card image cap">
+					  <div class="card-body">
+					  	<div class="row">
+					  		<div class="col-8">
+						   		<h5 class="card-title">${product.title}</h5>
+						   	</div>
+						   	<div class="col-4">
+						   		<span class="text-secondary">${product.price.formatCurrency('USD')}</span>
+						   	</div>
+					    </div>
+					    <p class="card-text text-truncate">${product.description}</p>
+					  </div>
+					  <div class="card-footer text-muted">
+					    <a href="/products/purchase/${product.id}" class="btn btn-primary">Purchase</a>
+					  </div>
+					</div>
+			     </div>
+		      	#{/list}
+      		</div>
+    		</div>
+    		</div>
+    </div>
+  </div>
+</div>
+
