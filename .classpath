@@ -6,6 +6,8 @@
 	
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Users/drodrigues/projects/play1/framework/play-1.4.x-1.4.5.jar" sourcepath="/Users/drodrigues/projects/play1/framework/src" />
+	<classpathentry kind="lib" path="/Users/drodrigues/projects/tinybeans/lib/stripe-java-7.0.0.jar" sourcepath="/Users/drodrigues/.ivy2/cache/com.stripe/stripe-java/sources/stripe-java-7.0.0-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/drodrigues/projects/tinybeans/lib/jaxb-api-2.3.0.jar" sourcepath="/Users/drodrigues/.ivy2/cache/javax.xml.bind/jaxb-api/sources/jaxb-api-2.3.0-sources.jar"/>
 	<classpathentry kind="lib" path="/Users/drodrigues/projects/play1/modules/docviewer/lib/play-docviewer.jar"/>
 	<classpathentry kind="lib" path="/Users/drodrigues/projects/play1/framework/lib/javax.inject-1.0.jar"/>
 	<classpathentry kind="lib" path="/Users/drodrigues/projects/play1/framework/lib/signpost-core-1.2.1.2.jar"/>

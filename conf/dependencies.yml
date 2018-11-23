@@ -3,3 +3,4 @@
 require:
     - play
     - javax.xml.bind -> jaxb-api 2.3.0
+    - com.stripe  ->  stripe-java 7.0.0

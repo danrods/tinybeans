@@ -1,0 +1,38 @@
+#{extends 'main.html' /}
+#{set title:'Payments' /}
+
+<div class="container">
+  <div class="row">
+    <div class="col align-self-center">
+    		<div class="card">
+		  <div class="card-header">
+		  	<div class="row">
+			  	<div class="col-11">
+			  		Let's get paid up
+			  	</div>
+		    </div>
+		  </div>
+		  <div class="card-body">
+		  #{form @Payments.charge()}
+			<form method="POST">
+				<input type="hidden" name="productId" value="${product.id}"/>
+				<input type="hidden" name="price" value="${product.price}"/>
+			  <script
+			    src="https://checkout.stripe.com/checkout.js" 
+			    class="stripe-button"
+			    data-key="${api}"
+			    data-amount="${product.price * 100}"
+			    data-name="TinyBeans"
+			    data-description="${product.title}"
+			    data-image="https://tinybeans.com/tinybeans-logo-centered.png"
+			    data-locale="auto"
+			    data-zip-code="true">
+			  </script>
+			</form>
+		#{/form}
+    		</div>
+    		</div>
+    </div>
+  </div>
+</div>
+

@@ -48,6 +48,18 @@ public class Products extends Controller {
 		index();
 	}
 	
+	public static void purchase(long productId) {
+//		Product p = Product.findById(productId);
+//		
+//		if(p != null) {
+//			Payments.Index(p);
+//			return;
+//		}
+		Payments.Index(productId);
+		
+//		error("No Product found for ID: " + productId);
+	}
+	
     public static void index() {
     		List<Product> products = Product.all().fetch(20);
         render(products);

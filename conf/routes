@@ -7,7 +7,11 @@ GET     /                                       Application.index
 GET		/products								Products.index
 GET		/products/new							Products.newProduct
 GET		/products/renderPhoto					Products.renderPhoto
+GET		/products/purchase						Products.purchase
 POST		/products/newProduct						Products.addProduct
+
+GET		/payments								Payments.index
+POST		/payments/charge							Payments.charge
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

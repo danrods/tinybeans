@@ -1,0 +1,39 @@
+#{extends 'main.html' /}
+#{set title:'Successfully paid!' /}
+
+<div class="container">
+	<script>
+		setTimeout(function(){
+			window.location.href="/products";
+		},
+		6000);
+	</script>
+  <div class="row">
+    <div class="col align-self-center">
+    		<div class="card">
+		  <div class="card-header">
+		  	<div class="row">
+			  	<div class="col-11">
+			  		Success!
+			  	</div>
+		    </div>
+		  </div>
+		  <div class="card-body">
+
+			<div class="row">
+				<img class="card-img-top" src="@{'public/images/success.jpg'}" alt="Success"/>
+			</div>
+			<div class="row">
+				<div class="row">
+					<p>Your Order ID is ${paid.paymentReference}</p><br>
+				</div>
+				<div class="row">
+					<p>Your Payment Ref is ${paid.id}</p>
+				</div>
+			</div>
+    		</div>
+    		</div>
+    </div>
+  </div>
+</div>
+
