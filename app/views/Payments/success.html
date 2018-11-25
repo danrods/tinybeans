@@ -3,10 +3,7 @@
 
 <div class="container">
 	<script>
-		setTimeout(function(){
-			window.location.href="/products";
-		},
-		6000);
+	 
 	</script>
   <div class="row">
     <div class="col align-self-center">
@@ -24,13 +21,20 @@
 				<img class="card-img-top" src="@{'public/images/success.jpg'}" alt="Success"/>
 			</div>
 			<div class="row">
-				<div class="row">
+				<div class="col-12">
 					<p>Your Order ID is ${paid.paymentReference}</p><br>
 				</div>
-				<div class="row">
+				<div class="col-12">
 					<p>Your Payment Ref is ${paid.id}</p>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-6">
+	          		<button id="redirect" type="button" class="btn btn-primary btn-lg" onclick="window.location.replace('/products');">
+	          			Let's buy some more stuff!
+	          		</button>
+	          	</div>
+          	</div>
     		</div>
     		</div>
     </div>

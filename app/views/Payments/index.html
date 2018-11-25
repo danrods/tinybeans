@@ -1,7 +1,31 @@
 #{extends 'main.html' /}
 #{set title:'Payments' /}
 
-<div class="container">
+#{set 'moreStyles'}
+<style type="text/css" >
+
+ * {
+  font-family: Source Code Pro, Consolas, Menlo, monospace;
+  font-size: 16px;
+  font-weight: 500;
+  /*background-color: #fff;  */
+}
+
+.icon .border {
+  stroke: #abe9d2;
+  fill:#abe9d2;
+}
+
+.icon .checkmark {
+  stroke: #fff;
+}
+ 
+</style>
+
+#{/set}
+
+
+<div class="container wrapper">
   <div class="row">
     <div class="col align-self-center">
     		<div class="card">
@@ -13,8 +37,218 @@
 		    </div>
 		  </div>
 		  <div class="card-body">
-		  #{form @Payments.charge()}
-			<form method="POST">
+		  
+		  <div class="container-fluid mb-3">
+		  	<div class="media">
+			  <img class="mr-3 w-25 p-1 rounded-circle" src="@{Products.renderPhoto(product.id)}" alt="Generic placeholder image">
+			  <div class="media-body">
+			    <h5 class="mt-0">${product.title}</h5>
+			    ${product.description}
+			  </div>
+			</div>
+		  </div>
+		  
+		  
+		<div id="paymentContainer" class=" container-fluid shadow p-2">
+			#{form @Payments.charge()}
+			<form method="post"  >
+				<input type="hidden" name="productId" value="${product.id}"/>
+				<input type="hidden" name="price" value="${product.price}"/>
+			
+		          <div class="row-fluid">
+			            <div class="row">
+			            		 <div class="col-6 form-group">
+				                <label for="name">Name</label>
+				                <input id="name" name="name" class="form-control" type="text" required="">
+				              </div>
+				              <div class="col-6 form-group">
+				                <label for="email">Email</label>
+				                <input id="email" name="stripeEmail" class="form-control" type="email" required="">
+				              </div>
+				              <div class="col-6 form-group">
+				                <label for="address">Address</label>
+				                <input id="address" name="address" class="form-control" type="text" required="">
+				              </div>
+				              <div class="col-4 form-group">
+				                <label for="city">City</label>
+				                <input id="city" name="city"  class="form-control" type="text" required="">
+				              </div>
+				              
+				              <div class="col-2 form-group">
+				                <label for="state">State</label>
+				                <input id="state" name="state" class="form-control" type="text" required="" >
+				              </div>
+			            </div>
+			            <div class="row-fluid">
+			            		<label >Card Information</label>
+		            			<div id="card-element" class="col-12 form-group">
+				              <!-- <label for="cardNumber" >Card number</label>
+				              <div id="cardNumber" class="form-control"></div> -->
+				            </div>
+			          	</div>
+		          </div>
+		          <div class="row">
+		          	
+		          	<div id="card-errors" role="alert"></div>
+		          </div>
+			</form>
+			#{/form}
+			<div id="submitForm" class="row">
+				<div class="col-6">
+	          		<button id="submitBtn" type="submit" class="btn btn-success btn-lg">Pay $${product.price}
+	          		<span id="successIcon" class="icon" display="background-color:blue" hidden>
+			            <svg width="50px" height="50px" viewBox="0 0 84 84" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+			              <circle class="border" cx="42" cy="42" r="40" stroke-linecap="round" 
+			              	stroke-width="4" stroke="#000" fill="none" fill-opacity="0.4"></circle>
+			              <path class="checkmark" stroke-linecap="round" stroke-linejoin="round" 
+			              	d="M23.375 42.5488281 36.8840688 56.0578969 64.891932 28.0500338" stroke-width="4" 
+			              	stroke="#000" fill="none" fill-opacity="0.4">
+			              </path>
+			            </svg>
+			       </span>
+	          		</button>
+	          		
+	          	</div>
+          	</div>
+			<script src="https://js.stripe.com/v3/"></script>
+       </div>
+		  
+    		</div>
+<script>
+	
+	/* use strict'; */
+
+	var stripe = Stripe("${api}");
+
+	function submitBtn(){
+		var submitBtn = document.querySelector('#submitBtn');
+		submitBtn.setAttribute('disabled','');
+		
+		var successBtn = document.querySelector('#successIcon');
+		successBtn.removeAttribute('hidden');
+		submitBtn.innerText = "Paying...";
+	}
+	
+	function resetSubmitBtn(){
+		var submitBtn = document.querySelector('#submitBtn');
+		submitBtn.removeAttribute('disabled');
+		submitBtn.innerText = "Paid";
+		
+		var successBtn = document.querySelector('#successIcon');
+		successBtn.setAttribute('hidden','');
+	}
+
+	  
+	// Submit the form with the token ID.
+	  function stripeTokenHandler(form, token) {
+	    // Insert the token ID into the form so it gets submitted to the server
+	    //var form = document.getElementById('payment-form');
+	    console.log('Running handler for stripe token');
+	    
+	    
+	    
+	    //console.log('Reset button!');
+	    
+	    var hiddenInput = document.createElement('input');
+	    hiddenInput.setAttribute('type', 'hidden');
+	    hiddenInput.setAttribute('name', 'stripeToken');
+	    
+	    console.log('Adding value: ' + token);
+	    hiddenInput.setAttribute('value', token.id);
+	    
+	    console.log('Appending to child');
+	    
+	    form.appendChild(hiddenInput);
+
+	    console.log("Form added --> Submitting");
+	    
+	    // Submit the form
+	    form.submit();
+	  }
+	
+  	function initalize(){
+		// Create an instance of Elements.
+		  var elements = stripe.elements();
+
+		  // Custom styling can be passed to options when creating an Element.
+		  // (Note that this demo uses a wider set of styles than the guide below.)
+		  var style = {
+		    base: {
+		      color: '#32325d',
+		      lineHeight: '18px',
+		      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+		      fontSmoothing: 'antialiased',
+		      fontSize: '16px',
+		      '::placeholder': {
+		        color: '#aab7c4'
+		      }
+		    },
+		    invalid: {
+		      color: '#fa755a',
+		      iconColor: '#fa755a'
+		    }
+		  };
+		  
+		  var elementClasses = {
+				    focus: 'form-control',
+				    empty: 'form-control',
+				    invalid: 'form-control',
+				};
+
+		  // Create an instance of the card Element.
+		  var card = elements.create('card', {classes: elementClasses});
+
+		  // Add an instance of the card Element into the `card-element` <div>.
+		  card.mount('#card-element');
+
+		  // Handle real-time validation errors from the card Element.
+		  card.addEventListener('change', function(event) {
+		    var displayError = document.getElementById('card-errors');
+		    if (event.error) {
+		      displayError.textContent = event.error.message;
+		    } else {
+		      displayError.textContent = '';
+		    }
+		  });
+
+		  // Handle form submission.
+		  var form = document.querySelector('#paymentContainer form');
+		  var btn = document.getElementById('submitBtn');
+		  
+		  btn.addEventListener('click', function(event) {
+		    event.preventDefault();
+
+		    submitBtn();
+		    
+		    stripe.createToken(card)
+		    .then(function(result) {
+		    	  console.log(result.error + ', ' + result.token + ',' + form);
+		      if (result.error) {
+		    	  	console.log('There was an error!');
+		        // Inform the user if there was an error.
+		        var errorElement = document.getElementById('card-errors');
+		        errorElement.textContent = result.error.message;
+		      } else {
+		    	  	console.log('No error found, continuing...');
+		    	  	//resetSubmitBtn(); //Don't know why making two function calls fails to call the second one, so putting this on hold.
+		    	  	//console.log('Reset successful!');
+			    	stripeTokenHandler(form, result.token);
+		        // Send the token to your server.
+		        
+		      }
+		    });
+		  });
+
+		  
+	  }
+		
+	  initalize();
+	 //registerElements();
+	
+</script>
+		  
+		  
+<!-- 			<form method="POST">
 				<input type="hidden" name="productId" value="${product.id}"/>
 				<input type="hidden" name="price" value="${product.price}"/>
 			  <script
@@ -28,9 +262,8 @@
 			    data-locale="auto"
 			    data-zip-code="true">
 			  </script>
-			</form>
-		#{/form}
-    		</div>
+			</form> -->
+		
     		</div>
     </div>
   </div>

@@ -17,7 +17,12 @@
 		  </div>
 		  <div class="card-body">
 		  	<div class="row">
-		  		<h4>Select a Product: </h4>
+			  	#{if products.size() == 0} 
+				    
+				#{/if}
+				#{else}
+				    <h4>Select a Product: </h4>
+				#{/else}
 		  	</div>
 	    		<div class="row">
 		    		#{list items:products, as:'product' }
@@ -27,7 +32,7 @@
 					  <div class="card-body">
 					  	<div class="row">
 					  		<div class="col-8">
-						   		<h5 class="card-title">${product.title}</h5>
+						   		<h5 class="card-title text-truncate" alt="${product.title}">${product.title}</h5>
 						   	</div>
 						   	<div class="col-4">
 						   		<span class="text-secondary">${product.price.formatCurrency('USD')}</span>
@@ -41,6 +46,15 @@
 					</div>
 			     </div>
 		      	#{/list}
+		      	#{else}
+		      		<div class="container-fluid">
+			      		<div class="jumbotron">
+						  <h1 class="display-4">Sorry no products yet :(</h1>
+						  <p class="lead">Feel free to create one using the "+ add" button on the top</p>
+						  <hr class="my-4">
+						</div>
+					</div>
+		      	#{/else}
       		</div>
     		</div>
     		</div>

@@ -24,8 +24,10 @@ public class Payments extends Controller{
 	private static Charge chargeForProduct(long price, String email, String token) throws StripeException {
 		Stripe.apiKey = API_KEY;
 
+		System.out.println("Chargin for product: " + price + ", " + email + ", " + token);
+		
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("amount", price * 100);
+		params.put("amount", price * 100); //Stripe want's us to multiply by 100 to get value in cents.
 		params.put("currency", "usd");
 		params.put("source", token);
 		params.put("receipt_email", email);
